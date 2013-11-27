@@ -1,0 +1,541 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>My Pharmacy</title>
+
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.0-rc.1.css" />
+    <link rel="stylesheet" type="text/css" href="css/layout.css" />
+    <link rel="stylesheet" type="text/css" href="font/stylesheet.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+    <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="js/jsLibrary.js"></script>
+    <script type="text/javascript" src="js/jquery.mobile-1.4.0-rc.1.min.js"></script>
+
+    <script type="text/javascript">
+
+        function getMedicationHtml(medications) {
+
+            var html = '';
+
+            jQuery.each(medications, function () {
+
+                var medicationDetail = this;
+                var scripts = '';
+
+                jQuery.each(medicationDetail.scripts, function () {
+
+                    var script = this;
+
+                    scripts +=
+                        '<div class="exp-date">EXP: {0}</div>'.format(script.expire) +
+                        '<div class="quantity">QTY: {0}</div>'.format(script.quantity) +
+                        '<div class="repeats-left">Repeats Left: {0}</div>'.format(script.repeatsLeft) +
+                        '<div class="btn-order">Order</div>' +
+                        '<br class="clearfix" />' +
+                        '<br />';
+                });
+
+                var dueText = medicationDetail.dueInDays == 0
+                    ? '<div class="btn-due-now"><span>DUE</span> <strong>NOW</strong></div>'
+                    : '<div class="btn-due-days"><span>DUE IN</span><br /><strong>{0} DAYS</strong></div>'.format(medicationDetail.dueInDays);
+
+                var timeText = medicationDetail.dueInDays == 0
+                    ? '<div class="time-next"><span>Next</span><br /><time>{0}</time></div>'.format(medicationDetail.next)
+                    : '<div class="time-set"><strong>SET</strong><br /></div>';
+
+                html +=
+                    '<div class="medicine-section">' +
+                        '<div class="left-section">' +
+                            '<div class="title-regular">{0}</div>'.format(medicationDetail.genericName) +
+                            '({0})<br /><br />'.format(medicationDetail.brandName) +
+                            '<div class="btn-order-now">ORDER NOW</div>' +
+                            dueText +
+                            timeText +
+                            '<br />' +
+                        '</div>' +
+
+                        '<div class="right-arrow">' +
+                            '<a href="">' +
+                                '<img src="images/aroow-next.png" alt="next" width="14" height="54" border="0" />' +
+                            '</a>' +
+                        '</div>' +
+
+                        '<br class="clearfix" />' +
+                    '</div>' +
+
+                    '<div class="accordion-section">' +
+                        '<div class="accordion-header" onclick="toggleAccordionContent(this)">' +
+                            '<div class="script-collapse"><span>No. of Scripts: <strong class="blue-txt">{0}</strong></span></div>'.format(medicationDetail.scripts.length) +
+                            '<div class="txt-repeats-left"><span>Repeats Left: <strong class="blue-txt">{0}</strong> </span></div>'.format(medicationDetail.totalRepeatsLeft) +
+                        '</div>' +
+                        '<br clear="all" />' +
+                        '<div class="accordion-contents" style="display:none">' +
+                            scripts +
+                        '</div>' +
+                    '</div>' +
+                    '<br clear="all" />';
+            });
+
+            return html;
+        }
+
+        function toggleAccordionContent(element) {
+
+            if (jQuery(element).next().next().is(':hidden') == true) {
+
+                jQuery(element).children().first().addClass('script-open');
+                jQuery(element).children().first().removeClass('script-collapse');
+                jQuery(element).next().next().slideDown('normal');
+            }
+            else {
+
+                jQuery(element).children().first().addClass('script-collapse');
+                jQuery(element).children().first().removeClass('script-open');
+                jQuery(element).next().next().slideUp('normal');
+            }
+        }
+
+        function goToMedication(patientId) {
+
+            window.location = "#medications";
+
+            loadMedications(patientId, '9cf33f2a425048ca97b899738cdd58b2');
+        }
+
+        function loadMedications(patientId, code) {
+
+            jQuery.ajax({
+
+                url: "http://mypharmacy.amalliance.com.au/api/medications",
+                data: { patientId: patientId, code: code },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    jQuery('#patientName').html(data.patientName);
+
+                    jQuery('#regularMedications').html(getMedicationHtml(data.regular));
+                    jQuery('#neededMedications').html(getMedicationHtml(data.whenNeeded));
+                }
+            });
+        }
+
+
+
+        function getMedicationPatientsHtml(patients) {
+
+            var html = '';
+
+            jQuery.each(patients, function () {
+
+                var patient = this;
+
+                html += '<a href="javascript:goToMedication({0});">{1}</a>'.format(patient.patientId, patient.name);
+            });
+
+            return html;
+        }
+
+        function getReminderPatientsHtml(patients) {
+
+            var html = '';
+
+            jQuery.each(patients, function () {
+
+                var patient = this;
+
+                html += '<a href="javascript:goToReminder({0});">{1}</a>'.format(patient.patientId, patient.name);
+            });
+
+            return html;
+        }
+
+        function loadPatients(code) {
+            
+            jQuery.ajax({
+
+                url: "http://mypharmacy.amalliance.com.au/api/patients",
+                data: { code: code },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    
+                    jQuery('.medicationPatients').replaceWith(getMedicationPatientsHtml(data));
+                    jQuery('.reminderPatients').replaceWith(getReminderPatientsHtml(data));
+                }
+            });
+        }
+
+
+
+        function getReminderHtml(medications) {
+
+            var html = '';
+
+            jQuery.each(medications, function () {
+
+                var medicationDetail = this;
+
+                html +=
+                    '<div class="medicine-section-rem">' +
+                        '<div class="left-section-rem">' +
+                            '<div class="title-reminder">{0}</div>'.format(medicationDetail.genericName) +
+                            '({0})<br /><br />'.format(medicationDetail.brandName) +
+                            '<div class="title-reminder">{0}</div>'.format(medicationDetail.instruction) +
+                        '</div>' +
+                        '<div class="right-box-time">' +
+                            '<div class="box-time">' +
+                                '<div class="time-rem">9:00</div>' +
+                                '<div class="time-rem">12:00</div>' +
+                                '<div class="time-rem">15:00</div>' +
+                                '<div class="time-rem">18:00</div>' +
+                            '</div>' +
+                            '<div class="box-time-numb">1</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<br class="clearfix" />';
+            });
+
+            return html;
+        }
+
+        function goToReminder(patientId) {
+
+            window.location = "#reminders";
+
+            loadReminders(patientId, '9cf33f2a425048ca97b899738cdd58b2');
+        }
+
+        function loadReminders(patientId, code) {
+
+            jQuery.ajax({
+
+                url: "http://mypharmacy.amalliance.com.au/api/reminders",
+                data: { patientId: patientId, code: code },
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+
+                    jQuery('#patientName').html(data.patientName);
+
+                    jQuery('#regularReminders').html(getReminderHtml(data.regular));
+                    jQuery('#neededReminders').html(getReminderHtml(data.whenNeeded));
+                }
+            });
+        }
+
+
+
+        jQuery(function () {
+
+            loadMedications(43, '9cf33f2a425048ca97b899738cdd58b2');
+            loadReminders(43, '9cf33f2a425048ca97b899738cdd58b2');
+            loadPatients('9cf33f2a425048ca97b899738cdd58b2');
+
+            jQuery("#medications").on("swipeleft", function () {
+
+                jQuery("#medicationsMenu").panel("close");
+            });
+            jQuery("#medications").on("swiperight", function () {
+
+                jQuery("#medicationsMenu").panel("open");
+            });
+
+
+            jQuery("#reminders").on("swipeleft", function () {
+
+                jQuery("#remindersMenu").panel("close");
+            });
+            jQuery("#reminders").on("swiperight", function () {
+
+                jQuery("#remindersMenu").panel("open");
+            });
+
+        });
+
+    </script>
+</head>
+
+<body>
+
+    <div data-role="page" id="medications">
+
+        <div data-role="panel" id="medicationsMenu" data-position="left" data-dismissible="false" data-display="push">
+
+            <div class="main-wrapper-sidebar">
+                <div class="bodycontainer-sidebar">
+                    <div class="contents-wrapper-sidebar clearfix">
+                        <div class="btn-main-sidebar">
+                            <span>myOrders</span>
+                            <div class="notifications-numb">1</div>
+                            <br class="clearfix" />
+                        </div>
+                        <div class="contents-accord-sidebar clearfix" style="display: none"></div>
+
+                        <div class="btn-main-sidebar">
+                            <span>myNotifications</span>
+                            <div class="notifications-numb">9</div>
+                            <br class="clearfix" />
+                        </div>
+                        <div class="contents-accord-sidebar clearfix" style="display: none"></div>
+
+                        <div class="btn-main-sidebar">Send New Prescription</div>
+                        <div class="contents-accord-sidebar clearfix" style="display: none"></div>
+                        <br class="clearfix" />
+
+                        <div class="contents-links">
+                            <div class="title-sidebar">myMedications</div>
+                            <div class="box-links">
+                                <a href="">All Family</a>
+                                <div class="medicationPatients"></div>
+                            </div>
+                            <br />
+                            <div class="title-sidebar">myReminders</div>
+                            <div class="box-links">
+                                <a href="">All Family</a>
+                                <div class="reminderPatients"></div>
+                            </div>
+                            <br />
+
+                            <div class="title-sidebar">myPromotions</div>
+                            <div class="box-links">
+                                <a href="">Shake and Save $$$</a>
+                                <a href="">Saved Promotions</a>
+                            </div>
+                            <br />
+                            <div class="title-sidebar">Medicine Search</div>
+                            <div class="box-links">
+                                <a href="">Settings</a>
+                            </div>
+                            <br />
+
+
+                        </div>
+                        <div class="profile-section">
+                            <a href="">Shake and Save $$$</a>
+                            <a href="">Saved Promotions</a>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div data-role="header"></div>
+
+        <div data-role="content">
+
+            <div class="main-wrapper">
+                <div class="top">
+                    <div class="header-wrapper">
+                        <div class="txt-pharmacy">myPharmacy</div>
+                        <div class="btn-myMedications"><a href="">myMedications</a></div>
+                        <br class="clearfix" />
+                        <div class="script-send-add-panel">
+                            <a href="" class="link-add-script"><span>Add Script</span></a>
+                            <a href="" class="link-send-script"><span>Send Script</span></a>
+                            <a href="" class="link-order"><span>Select &amp; Order</span></a>
+                        </div>
+                        <br clear="all" />
+                    </div>
+                </div>
+
+                <div class="bodycontainer">
+                    <div class="contents-wrapper clearfix">
+                        <div id="Div1" class="title-regular"></div>
+                        <div class="box-contents">
+                            <div class="title-regular">Regular Medications</div>
+
+                            <div id="regularMedications">
+                            </div>
+                        </div>
+
+
+                        <div class="box-contents">
+                            <div class="title-regular">Take When Required Medications</div>
+
+                            <div id="Div2">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <div class="bottom-wrapper">
+                        <div onclick="javascript:jQuery('#medicationsMenu').panel('open');" class="btn-view-more"></div>
+                        <div class="btn-my-medications">
+                            <a href="#medications" data-transition="none">
+                                <img src="images/ico-medications.png" width="28" height="15" />
+                                <br />
+                                <strong>myMedications</strong>
+                            </a>
+                        </div>
+                        <div class="btn-my-reminders">
+                            <a href="#reminders" data-transition="none">
+                                <img src="images/ico-remiders].png" width="12" height="16" />
+                                <br />
+                                <strong>myReminders</strong>
+                            </a>
+                        </div>
+                        <div class="btn-my-promotions">
+                            <img src="images/ico-promotions.png" width="15" height="15" /><br />
+                            <strong>myPromotions</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div data-role="footer"></div>
+    </div>
+
+    <div data-role="page" id="reminders">
+
+        <div data-role="panel" id="remindersMenu" data-dismissible="false" data-position="left" data-display="push">
+
+            <div class="main-wrapper-sidebar">
+                <div class="bodycontainer-sidebar">
+                    <div class="contents-wrapper-sidebar clearfix">
+                        <div class="btn-main-sidebar">
+                            <span>myOrders</span>
+                            <div class="notifications-numb">1</div>
+                            <br class="clearfix" />
+                        </div>
+                        <div class="contents-accord-sidebar clearfix" style="display: none"></div>
+
+                        <div class="btn-main-sidebar">
+                            <span>myNotifications</span>
+                            <div class="notifications-numb">9</div>
+                            <br class="clearfix" />
+                        </div>
+                        <div class="contents-accord-sidebar clearfix" style="display: none"></div>
+
+                        <div class="btn-main-sidebar">Send New Prescription</div>
+                        <div class="contents-accord-sidebar clearfix" style="display: none"></div>
+                        <br class="clearfix" />
+
+                        <div class="contents-links">
+                            <div class="title-sidebar">myMedications</div>
+                            <div class="box-links">
+                                <a href="">All Family</a>
+                                <div class="medicationPatients"></div>
+                            </div>
+                            <br />
+                            <div class="title-sidebar">myReminders</div>
+                            <div class="box-links">
+                                <a href="">All Family</a>
+                                <div class="reminderPatients"></div>
+                            </div>
+                            <br />
+
+                            <div class="title-sidebar">myPromotions</div>
+                            <div class="box-links">
+                                <a href="">Shake and Save $$$</a>
+                                <a href="">Saved Promotions</a>
+                            </div>
+                            <br />
+                            <div class="title-sidebar">Medicine Search</div>
+                            <div class="box-links">
+                                <a href="">Settings</a>
+                            </div>
+                            <br />
+
+
+                        </div>
+                        <div class="profile-section">
+                            <a href="">Shake and Save $$$</a>
+                            <a href="">Saved Promotions</a>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div data-role="header"></div>
+
+        <div data-role="content">
+
+            <div class="main-wrapper">
+
+                <div class="top">
+                    <div class="header-wrapper">
+                        <div class="txt-pharmacy">myPharmacy</div>
+                        <div class="btn-myMedications"><a href="">myReminders</a></div>
+                        <br class="clearfix" />
+                        <div class="search-bar-top">
+                            <a href="">
+                                <img src="images/ico-search.png" width="12" height="12" border="0" /></a>
+                            <input type="tex" />
+                        </div>
+                        <br clear="all" />
+                    </div>
+                </div>
+
+                <div class="bodycontainer">
+                    <div class="contents-wrapper clearfix">
+                        <div id="patientName" class="title-regular"></div>
+                        <div class="box-contents">
+                            <div class="title-regular">Regular Medications</div>
+
+                            <div id="regularReminders"></div>
+
+                            <br clear="all" />
+                        </div>
+
+                        <div class="box-contents">
+                            <div class="title-regular">Take When Required Medications</div>
+
+                            <div id="neededMedications"></div>
+
+                            <br clear="all" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <div class="bottom-wrapper">
+                        <div onclick="javascript:jQuery('#remindersMenu').panel('open');" class="btn-view-more"></div>
+                        <div class="btn-my-medications">
+                            <a href="#medications" data-transition="none">
+                                <img src="images/ico-medications.png" width="28" height="15" />
+                                <br />
+                                <strong>myMedications</strong>
+                            </a>
+                        </div>
+                        <div class="btn-my-reminders">
+                            <a href="#reminders" data-transition="none">
+                                <img src="images/ico-remiders].png" width="12" height="16" />
+                                <br />
+                                <strong>myReminders</strong>
+                            </a>
+                        </div>
+                        <div class="btn-my-promotions">
+                            <img src="images/ico-promotions.png" width="15" height="15" /><br />
+                            <strong>myPromotions</strong>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div data-role="footer"></div>
+    </div>
+
+</body>
+</html>

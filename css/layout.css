@@ -1,0 +1,613 @@
+body{
+	/*background-color:#e6e7e8;*/
+	margin:0 auto;
+	text-align:center;
+	font-size:10px;
+	font-family: 'helvetica_lt_stdregular';
+	color:#595959;
+	width:100%;
+}
+
+.main-wrapper, .top, .bodycontainer, .footer{
+	width:100%;
+}
+.top{
+	height:75px;
+	position:fixed;
+	top:0;
+	background-color: #00A0DC;
+	z-index:9;
+}
+.bodycontainer{
+	margin-top:50px;
+	background-color:#FFF;
+	margin-bottom:60px;
+}
+.footer{
+	background-color: #00A0DB;
+	position:fixed;
+	bottom:0;
+	height:50px;
+}
+.main-wrapper{
+	background-color: #FFFFFF;
+    display: block;
+    margin: auto;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+	z-index:2;
+}
+.header-wrapper{
+	margin:0 auto;
+    height: 55px;
+    padding: 10px;
+    text-align: left;
+    width: 300px;
+}
+.txt-pharmacy{
+	color:#FFF;
+	float:left;
+	font-weight:bold;
+	font-size:12px;
+}
+.btn-myMedications{
+	width:93px;
+	height:18px;
+	border-radius:13px;
+	background-color:#1eb0e3;
+	float:right;
+	padding-left:15px;
+	padding-right:5px;
+	padding-top:4px;
+}
+.btn-myMedications a{
+	color:#FFF;
+	text-decoration:none;
+	font-size:12px;
+}
+.clearfix{
+	display:block;
+	clear:both;
+}
+.script-send-add-panel{
+	display:block;
+	margin-top:10px;
+	width:290px;
+	height:22px;
+	border-radius:5px;
+	background-color:#fff;
+	padding-left:10px;
+	padding-top:4px;
+}
+.script-send-add-panel span{
+	position:relative;
+	top:2px;
+}
+.link-add-script{
+	background-image:url(../images/ico-add.png);
+	background-position:left;
+	width:73px;
+	height:13px;
+	background-repeat:no-repeat;
+	padding-left:15px;
+	float:left;
+	
+}
+.link-send-script{
+	background-image:url(../images/ico-send.png);
+	background-position:left;
+	width:78px;
+	height:13px;
+	background-repeat:no-repeat;
+	padding-left:15px;
+	float:left;
+}
+.link-order{
+	background-image:url(../images/ico-select.png);
+	background-position:left;
+	width:90px;
+	height:13px;
+	background-repeat:no-repeat;
+	padding-left:15px;
+	float:left;
+}
+.script-send-add-panel a{
+	color:#006F91;
+	text-decoration:none;
+}
+.contents-wrapper{
+	display: block;
+    margin-bottom: 95px;
+    overflow-y: auto;
+    text-align: center;
+    width: 95%;
+	margin:0 auto;
+
+}
+
+.contents-wrapper::-webkit-scrollbar { 
+    display: none; 
+}
+
+.title-regular{
+	color:#58585B;
+	font-size:15px;
+	font-weight:bold;
+	margin-top:4px;
+}
+.title-regular-upper{
+	color:#58585B;
+	font-size:16px;
+	font-weight:bold;
+	margin-top:8px;
+	text-transform:uppercase;
+}
+
+.box-contents{
+	width:300px;
+	padding-top:3px;
+	padding-bottom:10px;
+	border-radius:5px;
+	border:1px solid #CCC;
+	display:block;
+	margin:auto;
+	margin-top:6px;
+}
+
+.medicine-section{
+	text-align:left;
+	display:block;
+	border-top:1px solid #CCC;
+	border-bottom:1px dashed #CCC;
+	padding-left:10px;
+	padding-bottom:10px;
+	margin-top:5px;
+}
+.left-section{
+	float:left;
+	width:265px;
+}
+.right-arrow{
+	float:right;
+	width:20px;
+	margin-top:45px;
+}
+.btn-order-now{
+	border-radius:5px;
+	border:1px solid #CCC;
+
+	padding-top:13px;
+	padding-bottom:3px;
+	width:81px;
+	float:left;
+	height:20px;
+	cursor:pointer;
+	text-align:center;
+}
+.btn-due-now{
+	background-image:url(../images/ico-due.png);
+	background-position:left;
+	background-repeat:no-repeat;
+	border-radius:5px;
+	border:1px solid #CCC;
+	padding-left:25px;
+	padding-top:5px;
+	padding-bottom:1px;
+	width:35px;
+	float:left;
+	margin-left:5px;
+	height:30px;
+	cursor:pointer;
+	color:#6f6f6f;
+}
+.btn-due-now span{
+	font-size:7px;
+	position:relative;
+	top:1px;
+	}
+.btn-due-now strong{
+	position:relative;
+	top:2px;
+	}
+.btn-due-days{
+	background-image:url(../images/ico-due.png);
+	background-position:left;
+	background-repeat:no-repeat;
+	border-radius:5px;
+	border:1px solid #CCC;
+	padding-left:25px;
+	padding-top:5px;
+	padding-bottom:1px;
+	width:55px;
+	float:left;
+	margin-left:5px;
+	height:30px;
+	cursor:pointer;
+	color:#6f6f6f;
+}
+.btn-due-days span{
+	font-size:7px;
+	position:relative;
+	top:1px;
+}
+.btn-due-days strong{
+	position:relative;
+	top:2px;
+	}
+.time-next{
+	background-image:url(../images/ico-time.png);
+	background-position:left;
+	background-repeat:no-repeat;
+	padding-left:23px;
+	padding-bottom:5px;
+	width:55px;
+	float:left;
+	margin-left:5px;
+	height:30px;
+	position: relative;
+    top: -4px;
+}
+.time-next span{
+	position:relative;
+	left:3px;
+	top:3px;
+}
+.time-set{
+	background-image: url("../images/ico-time.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    float: left;
+    height: 20px;
+    margin-left: 5px;
+    padding-bottom: 1px;
+    padding-left: 26px;
+    padding-top: 15px;
+    width: 30px;
+	cursor:pointer;
+	border-radius:5px;
+	border:1px solid #CCC;
+	
+}
+time{
+	font-size:22px;
+	color:#00A0DB;
+	position:relative;
+	left:3px;
+	top:3px;
+}
+.accordion-section{
+	display:block;
+	margin-top:5px;
+
+}
+.accordion-header{
+	display:block;
+}
+.accordion-contents{
+	display:block;
+	margin-top:8px;
+}
+
+.script-collapse{
+ 	background-image: url("../images/ico-collapse.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    float: left;
+    height: 20px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-top: 1px;
+	margin-left:10px;
+	cursor:pointer;
+}
+.script-open{
+ 	background-image: url("../images/ico-open.png");
+    background-position: left center;
+    background-repeat: no-repeat;
+    float: left;
+    height: 20px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-top: 1px;
+	margin-left:10px;
+	cursor:pointer;
+}
+
+.txt-repeats-left span {
+	position:relative;
+	top:2px;
+}
+
+.script-open span {
+	position:relative;
+	top:5px;
+}
+.script-collapse span{
+	position:relative;
+	top:5px;
+	left:5px;
+}
+
+
+.txt-repeats-left{
+    float: right;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-top: 8px;
+	margin-right:10px;
+}
+.blue-txt{
+	color:#00A0DB;
+	font-size:10px;
+}
+.exp-date{
+	float:left;
+	margin-left:10px;
+}
+.quantity{
+	float:left;
+	margin-left:5px;	
+}
+.repeats-left{
+	float:left;
+	margin-left:5px;
+}
+.btn-order{
+	float:left;
+	margin-left:8px;
+	color:#00A0DB;
+	border-radius:5px;
+	background-color:#E6E7E8;
+	padding-top:3px;
+	padding-left:31px;
+	padding-right:31px;
+	padding-bottom:4px;
+	cursor:pointer;
+	margin-top:-2px;
+}
+.bottom-wrapper{
+    display: block;
+    height: 50px;
+	margin:0 auto;
+    width: 320px;
+    z-index: 99999;
+	
+}
+.btn-view-more{
+	float:left;
+	background-image:url(../images/ico-more.png);
+	background-position:center;
+	background-repeat:no-repeat;
+	background-color:#0386B8;
+	height:50px;
+	width:32px;
+	cursor:pointer;
+}
+.btn-my-medications{
+	float:left;
+	width:95px;
+	color:#FFF;
+	height:50px;
+	cursor:pointer;
+}
+.btn-my-reminders{
+	float:left;
+	width:95px;
+	color:#FFF;
+	height:50px;
+	cursor:pointer;
+}
+.btn-my-promotions{
+	float:left;
+	width:95px;
+	color:#FFF;
+	height:50px;
+	cursor:pointer;
+}
+.bottom-wrapper img{
+	margin-top:8px;
+	margin-bottom:5px;	
+}
+
+/*---------------side bar----------------------*/
+
+.main-wrapper-sidebar{
+	
+	
+    display: block;
+    margin: auto;
+    overflow: hidden;
+	height:auto;
+  
+    text-align: center;
+
+}
+.bodycontainer-sidebar{
+
+	z-index:9999;
+	text-align:left;
+	margin:auto;
+}
+
+.contents-wrapper-sidebar{
+	display: block;
+    overflow-y: auto;
+    text-align: left;
+	width:242px;
+	background-color:#FFF;
+	font-size:12px;
+	font-weight:bold;
+}
+.btn-main-sidebar{
+	display:block;
+	padding-top:10px;
+	padding-bottom:10px;
+	border-bottom:1px solid #e3e4e5;
+	cursor:pointer;
+	padding-left:10px;
+}
+.btn-main-sidebar span{
+	float:left;
+}
+.notifications-numb{
+	background-image:url(../images/bg-notifications.png);
+	background-repeat:no-repeat;
+	width:15px;
+	height:16px;
+	float:right;
+	color:#FFF;
+	font-size:12px;
+	padding-left:3px;
+	padding-top:1px;
+
+}
+.contents-accord-sidebar{
+	display:block;
+	width:222px;	
+	padding-top:10px;
+	padding-bottom:10px;
+	padding-left:10px;
+}
+.contents-links{
+	display:block;
+	width:222px;	
+	padding-top:10px;
+	padding-bottom:10px;
+	padding-left:10px;
+}
+.title-sidebar{
+	font-size:16px;
+	font-weight:normal;
+	color:#a9a9a9;
+	display:block;
+	margin-top:5px;
+}
+.box-links{
+	width:208px;
+	padding-left:10px;
+	padding-top:10px;
+	padding-bottom:10px;
+	border-radius: 5px;
+	border:1px solid #e0e0e0;
+	margin-top:10px;
+}
+
+.contents-links a{
+	display:block;
+	text-decoration:none;
+	color:#595959;
+	margin-bottom:7px;
+}
+.profile-section{
+	display:block;
+	padding-top:10px;
+	border-top:1px solid #CCC;
+	padding-left:10px;
+}
+.profile-section a{
+	display:block;
+	text-decoration:none;
+	color:#595959;
+	margin-bottom:7px;
+}
+
+/*----------------myReminders--------------------------*/
+
+.search-bar-top{
+	display:block;
+	margin-top:10px;
+	width:290px;
+	height:22px;
+	border-radius:5px;
+	background-color:#fff;
+	padding-left:10px;
+	padding-top:4px;
+}
+.search-bar-top input{
+	border: 0 none;
+    height: 20px;
+    padding-left: 2px;
+    padding-right: 1px;
+    position: relative;
+    top: -3px;
+    width: 268px;
+	color:#595959;
+}
+.medicine-section-rem{
+	text-align:left;
+	display:block;
+	padding-top:8px;
+	border-top:1px solid #e0e0e0;
+	padding-left:10px;
+	padding-bottom:10px;
+	margin-top:5px;
+}
+.left-section-rem{
+	float:left;
+	margin-left:2px;
+}
+.right-box-time{
+	float:right;
+	width:150px;
+	height:75px;
+	margin-top:8px;
+	margin-right:10px;
+	border:1px solid #e0e0e0;
+	border-radius:5px;
+	text-align:center;
+}
+.title-reminder{
+	color:#58585B;
+	font-size:10px;
+	font-weight:bold;
+	margin-top:8px;
+}
+.box-time{
+	
+	text-align:left;
+	display:block;
+	width:140px;
+	height:39px;
+	background-color:#e6e7e8;
+	padding-left:10px;
+}
+.time-rem{
+	float: left;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 2px;
+    margin-top: 12px;
+	text-align:center;
+}
+.box-time-numb{
+	font-size:22px;
+	color:#808285;
+	font-weight:bold;
+	margin-top:5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
